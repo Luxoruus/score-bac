@@ -1,7 +1,6 @@
 <template>
-  <div
-    class="font-semibold text-center bg-gradient-to-r from-[#141E30] to-[#243B55] h-screen w-screen snap-mandatory snap-y overflow-scroll">
-    <div class="py-20 snap-center h-screen w-screen">
+  <div class="overflow-x-hidden font-semibold text-center bg-gradient-to-r from-[#141E30] to-[#243B55] h-screen w-screen overflow-y-scroll scrollChrome">
+    <div class="py-20 scrollChild h-screen w-screen">
       <span class="text-4xl text-transparent bg-clip-text bg-gradient-to-r from-[#74ebd5] to-[#ACB6E5]">Bienvenue à
         Score BAC</span><br>
       <span class="text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#74ebd5] to-[#ACB6E5]">Ici vous
@@ -9,11 +8,11 @@
         calculer votre score de formule générale (FG) rapidement.</span><br>
       <div class="h-full">
         <div class="relative h-full">
-          <MouseAnimation/>
+          <MouseAnimation />
         </div>
       </div>
     </div>
-    <div class="py-20 snap-center h-screen w-screen">
+    <div class="py-20 scrollChild h-screen w-screen">
       <div class="h-full w-full inline-block">
         <span class="text-3xl text-transparent bg-clip-text bg-gradient-to-r from-[#74ebd5] to-[#ACB6E5]">Choix de
           Section</span><br>
@@ -86,7 +85,7 @@
         </transition>
       </div>
       <div class="relative bottom-[-2.25rem]">
-        <span class="text-sm" >Website made by Med Dhiaa "Lux" Jaziri with love ❤️.</span>
+        <span class="text-sm">Website made by Med Dhiaa "Lux" Jaziri with love ❤️.</span>
       </div>
     </div>
   </div>
@@ -115,7 +114,29 @@ export default {
     getFormuleGenerale(fg) {
       this.fGenerale = fg;
       console.log(this.fGenerale);
+    },
+
+    scrollFunc() {
+      if(navigator.userAgent.indexOf("Firefox") === -1){
+        let canScroll = true;
+        let scrollContainer = document.querySelector('.scrollChrome')
+        scrollContainer.addEventListener('wheel', function (e) {
+          console.log(canScroll)
+          if (canScroll) {
+            scrollContainer.scrollBy(0, e.deltaY);
+            canScroll = false;
+            setTimeout(() => {
+              canScroll = true;
+            }, 500);
+          }
+          e.preventDefault();
+        }, { passive: false });
+      }
     }
+  },
+
+  mounted() {
+    this.scrollFunc();
   }
 }
 </script>
@@ -138,5 +159,16 @@ import MouseAnimation from './components/MouseAnimation.vue';
   font-family: Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.scrollChrome {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -ms-scroll-snap-type: mandatory;
+}
+
+.scrollChild {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
 }
 </style>

@@ -6,6 +6,7 @@ const path = require("path")
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/score-bac/',
   plugins: [vue()],
   resolve: {
     symlinks: false,
@@ -14,5 +15,4 @@ export default defineConfig({
       vue: path.resolve(`./node_modules/vue`)
     }
   },
-  base: '/score-bac/',
 })
